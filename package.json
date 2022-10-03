@@ -1,6 +1,7 @@
 {
 	"name": "rststore",
 	"version": "1.0.0",
+	"type": "module",
 	"description": "RSTStore is a fashion store",
 	"main": "server.js",
 	"scripts": {
