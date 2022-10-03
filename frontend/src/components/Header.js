@@ -1,6 +1,7 @@
 import { Box, Flex, Heading, Icon, Link } from '@chakra-ui/react';
 import { useState } from 'react';
 import { HiOutlineMenuAlt3, HiShoppingBag, HiUser } from 'react-icons/hi';
+import { Link as RouterLink } from 'react-router-dom';
 
 const Header = () => {
 	const [show, setShow] = useState(false);
@@ -25,7 +26,10 @@ const Header = () => {
 				fontWeight='bold'
 				size='md'
 				letterSpacing='md'>
-				<Link href='/' _hover={{ color: 'gray.500', textDecor: 'none' }}>
+				<Link
+					as={RouterLink}
+					to='/'
+					_hover={{ color: 'gray.500', textDecor: 'none' }}>
 					RST Store
 				</Link>
 			</Heading>
@@ -43,7 +47,8 @@ const Header = () => {
 				width={{ base: 'full', md: 'auto' }}
 				alignItems='center'>
 				<Link
-					href='/'
+					as={RouterLink}
+					to='/'
 					fontSize='sm'
 					letterSpacing='wide'
 					color='whiteAlpha.600'
@@ -59,7 +64,8 @@ const Header = () => {
 				</Link>
 
 				<Link
-					href='/'
+					as={RouterLink}
+					to='/'
 					fontSize='sm'
 					letterSpacing='wide'
 					color='whiteAlpha.600'
