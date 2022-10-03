@@ -39,5 +39,3 @@ const ProductCard = ({ product }) => {
 };
 
 export default ProductCard;
-
-// localhost:3000/product/2
