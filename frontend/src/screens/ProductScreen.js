@@ -1,12 +1,4 @@
-import {
-	Button,
-	Divider,
-	Flex,
-	Grid,
-	Heading,
-	Image,
-	Text,
-} from '@chakra-ui/react';
+import { Button, Flex, Grid, Heading, Image, Text } from '@chakra-ui/react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import Rating from '../components/Rating';
 import products from '../products';
