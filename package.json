@@ -21,6 +21,7 @@
 	},
 	"homepage": "https://gitlab.com/rahulat4200/rststore-28092022#readme",
 	"dependencies": {
+		"colors": "^1.4.0",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.1",
 		"mongoose": "^6.6.4"
