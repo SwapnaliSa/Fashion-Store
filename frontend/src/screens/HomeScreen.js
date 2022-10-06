@@ -1,19 +1,19 @@
 import { Grid, Heading } from '@chakra-ui/react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { listProducts } from '../actions/productActions';
 import ProductCard from '../components/ProductCard';
 
 const HomeScreen = () => {
-	const [products, setProducts] = useState([]);
+	const dispatch = useDispatch();
+
+	const productList = useSelector((state) => state.productList);
+	const { loading, products, error } = productList;
 
 	useEffect(() => {
-		const fetchProducts = async () => {
-			const { data } = await axios.get('/api/products');
-			setProducts(data);
-		};
-		fetchProducts();
-	}, []);
+		dispatch(listProducts());
+	}, [dispatch]);
 
 	return (
 		<>
@@ -21,11 +21,17 @@ const HomeScreen = () => {
 				Latest Products
 			</Heading>
 
-			<Grid templateColumns='1fr 1fr 1fr 1fr' gap='8'>
-				{products.map((product) => (
-					<ProductCard product={product} key={product._id} />
-				))}
-			</Grid>
+			{loading ? (
+				<p>Loading...</p>
+			) : error ? (
+				<p>{error}</p>
+			) : (
+				<Grid templateColumns='1fr 1fr 1fr 1fr' gap='8'>
+					{products.map((product) => (
+						<ProductCard product={product} key={product._id} />
+					))}
+				</Grid>
+			)}
 		</>
 	);
 };
