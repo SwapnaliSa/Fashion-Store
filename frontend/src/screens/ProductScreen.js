@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 
 import { listProductDetails } from '../actions/productActions';
 import Loader from '../components/Loader';
@@ -18,6 +18,7 @@ import Rating from '../components/Rating';
 
 const ProductScreen = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const [qty, setQty] = useState(1);
 
@@ -29,6 +30,10 @@ const ProductScreen = () => {
 	useEffect(() => {
 		dispatch(listProductDetails(id));
 	}, [id, dispatch]);
+
+	const addToCartHandler = () => {
+		navigate(`/cart/${id}?qty=${qty}`);
+	};
 
 	return (
 		<>
@@ -110,7 +115,8 @@ const ProductScreen = () => {
 							my='2'
 							textTransform='uppercase'
 							letterSpacing='wide'
-							disabled={product.countInStock === 0}>
+							disabled={product.countInStock === 0}
+							onClick={addToCartHandler}>
 							Add to cart
 						</Button>
 					</Flex>
