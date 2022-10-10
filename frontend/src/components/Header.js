@@ -48,7 +48,7 @@ const Header = () => {
 				alignItems='center'>
 				<Link
 					as={RouterLink}
-					to='/'
+					to='/cart'
 					fontSize='sm'
 					letterSpacing='wide'
 					color='whiteAlpha.600'
@@ -65,7 +65,7 @@ const Header = () => {
 
 				<Link
 					as={RouterLink}
-					to='/'
+					to='/login'
 					fontSize='sm'
 					letterSpacing='wide'
 					color='whiteAlpha.600'
