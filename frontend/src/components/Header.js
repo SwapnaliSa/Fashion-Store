@@ -1,10 +1,35 @@
-import { Box, Flex, Heading, Icon, Link } from '@chakra-ui/react';
+import {
+	Box,
+	Button,
+	Flex,
+	Heading,
+	Icon,
+	Link,
+	Menu,
+	MenuButton,
+	MenuItem,
+	MenuList,
+} from '@chakra-ui/react';
 import { useState } from 'react';
 import { HiOutlineMenuAlt3, HiShoppingBag, HiUser } from 'react-icons/hi';
-import { Link as RouterLink } from 'react-router-dom';
+import { IoChevronDown } from 'react-icons/io5';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { logout } from '../actions/userActions';
 
 const Header = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const [show, setShow] = useState(false);
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
+	const logoutHandler = () => {
+		dispatch(logout());
+		navigate('/');
+	};
 
 	return (
 		<Flex
@@ -63,22 +88,39 @@ const Header = () => {
 					Cart
 				</Link>
 
-				<Link
-					as={RouterLink}
-					to='/login'
-					fontSize='sm'
-					letterSpacing='wide'
-					color='whiteAlpha.600'
-					fontWeight='bold'
-					textTransform='uppercase'
-					mr='5'
-					display='flex'
-					alignItems='center'
-					_hover={{ color: 'whiteAlpha.800' }}
-					mt={{ base: 4, md: 0 }}>
-					<Icon as={HiUser} mr='1' w='4' h='4' />
-					Login
-				</Link>
+				{userInfo ? (
+					<Menu>
+						<MenuButton
+							as={Button}
+							rightIcon={<IoChevronDown />}
+							_hover={{ textDecor: 'none', opacity: '0.7' }}>
+							{userInfo.name}
+						</MenuButton>
+						<MenuList>
+							<MenuItem as={RouterLink} to='/profile'>
+								Profile
+							</MenuItem>
+							<MenuItem onClick={logoutHandler}>Logout</MenuItem>
+						</MenuList>
+					</Menu>
+				) : (
+					<Link
+						as={RouterLink}
+						to='/login'
+						fontSize='sm'
+						letterSpacing='wide'
+						color='whiteAlpha.600'
+						fontWeight='bold'
+						textTransform='uppercase'
+						mr='5'
+						display='flex'
+						alignItems='center'
+						_hover={{ color: 'whiteAlpha.800' }}
+						mt={{ base: 4, md: 0 }}>
+						<Icon as={HiUser} mr='1' w='4' h='4' />
+						Login
+					</Link>
+				)}
 			</Box>
 		</Flex>
 	);
