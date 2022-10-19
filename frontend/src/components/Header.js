@@ -87,7 +87,6 @@ const Header = () => {
 					<Icon as={HiShoppingBag} mr='1' w='4' h='4' />
 					Cart
 				</Link>
-
 				{userInfo ? (
 					<Menu>
 						<MenuButton
@@ -120,6 +119,32 @@ const Header = () => {
 						<Icon as={HiUser} mr='1' w='4' h='4' />
 						Login
 					</Link>
+				)}
+				{/* Admin Menu */}
+				{userInfo && userInfo.isAdmin && (
+					<Menu>
+						<MenuButton
+							ml='5'
+							color='white'
+							fontSize='sm'
+							fontWeight='semibold'
+							as={Link}
+							textTransform='uppercase'
+							_hover={{ textDecoration: 'none', opacity: '0.7' }}>
+							Manage <Icon as={IoChevronDown} />
+						</MenuButton>
+						<MenuList>
+							<MenuItem as={RouterLink} to='/admin/userlist'>
+								All Users
+							</MenuItem>
+							<MenuItem as={RouterLink} to='/admin/productlist'>
+								All Products
+							</MenuItem>
+							<MenuItem as={RouterLink} to='/admin/orderlist'>
+								All Orders
+							</MenuItem>
+						</MenuList>
+					</Menu>
 				)}
 			</Box>
 		</Flex>
