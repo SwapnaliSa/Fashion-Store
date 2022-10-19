@@ -49,6 +49,7 @@ const ShippingScreen = () => {
 					<FormControl id='address'>
 						<FormLabel htmlFor='address'>Address</FormLabel>
 						<Input
+							required
 							id='address'
 							type='text'
 							placeholder='Your Address'
@@ -63,6 +64,7 @@ const ShippingScreen = () => {
 					<FormControl id='city'>
 						<FormLabel htmlFor='city'>City</FormLabel>
 						<Input
+							required
 							id='city'
 							type='text'
 							placeholder='Your City'
@@ -77,6 +79,7 @@ const ShippingScreen = () => {
 					<FormControl id='postalCode'>
 						<FormLabel htmlFor='postalCode'>Postal Code</FormLabel>
 						<Input
+							required
 							id='postalCode'
 							type='text'
 							placeholder='Your Postal Code'
