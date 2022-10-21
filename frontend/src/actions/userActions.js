@@ -23,10 +23,13 @@ import {
 	USER_REGISTER_FAIL,
 	USER_REGISTER_REQUEST,
 	USER_REGISTER_SUCCESS,
+	USER_UPDATE_FAIL,
 	USER_UPDATE_PROFILE_FAIL,
 	USER_UPDATE_PROFILE_REQUEST,
 	USER_UPDATE_PROFILE_RESET,
 	USER_UPDATE_PROFILE_SUCCESS,
+	USER_UPDATE_REQUEST,
+	USER_UPDATE_SUCCESS,
 } from '../constants/userConstants';
 
 export const login = (email, password) => async (dispatch) => {
@@ -205,6 +208,35 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 	} catch (err) {
 		dispatch({
 			type: USER_DELETE_FAIL,
+			payload:
+				err.response && err.response.data.message
+					? err.response.data.message
+					: err.message,
+		});
+	}
+};
+
+export const updateUser = (user) => async (dispatch, getState) => {
+	try {
+		dispatch({ type: USER_UPDATE_REQUEST });
+
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+				'Content-Type': 'application/json',
+			},
+		};
+
+		const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+
+		dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
+	} catch (err) {
+		dispatch({
+			type: USER_UPDATE_FAIL,
 			payload:
 				err.response && err.response.data.message
 					? err.response.data.message
