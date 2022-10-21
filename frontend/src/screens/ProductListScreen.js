@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 import { IoAdd, IoPencilSharp, IoTrashBinSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { listProducts } from '../actions/productActions';
+import { deleteProduct, listProducts } from '../actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
@@ -29,16 +29,25 @@ const ProductListScreen = () => {
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
+	const productDelete = useSelector((state) => state.productDelete);
+	const {
+		loading: loadingDelete,
+		error: errorDelete,
+		success: successDelete,
+	} = productDelete;
+
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
 			dispatch(listProducts());
 		} else {
 			navigate('/login');
 		}
-	}, [dispatch, navigate, userInfo]);
+	}, [dispatch, navigate, userInfo, successDelete]);
 
 	const deleteHandler = (id) => {
-		// Delete PRODUCT
+		if (window.confirm('Are you sure?')) {
+			dispatch(deleteProduct(id));
+		}
 	};
 
 	const createProductHandler = () => {
