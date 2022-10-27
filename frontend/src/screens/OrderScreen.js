@@ -1,12 +1,29 @@
-import { Box, Flex, Grid, Heading, Image, Link, Text } from '@chakra-ui/react';
+import {
+	Box,
+	Button,
+	Flex,
+	Grid,
+	Heading,
+	Image,
+	Link,
+	Text,
+} from '@chakra-ui/react';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useParams } from 'react-router-dom';
-import { getOrderDetails, payOrder } from '../actions/orderActions';
+
+import {
+	deliverOrder,
+	getOrderDetails,
+	payOrder,
+} from '../actions/orderActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { ORDER_PAY_RESET } from '../constants/orderConstants';
+import {
+	ORDER_DELIVER_RESET,
+	ORDER_PAY_RESET,
+} from '../constants/orderConstants';
 
 const OrderScreen = () => {
 	const dispatch = useDispatch();
@@ -18,6 +35,12 @@ const OrderScreen = () => {
 	const orderPay = useSelector((state) => state.orderPay);
 	const { loading: loadingPay, success: successPay } = orderPay;
 
+	const orderDeliver = useSelector((state) => state.orderDeliver);
+	const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
 	if (!loading) {
 		order.itemsPrice = order.orderItems.reduce(
 			(acc, currVal) => acc + currVal.price * currVal.qty,
@@ -27,16 +50,20 @@ const OrderScreen = () => {
 
 	useEffect(() => {
 		dispatch({ type: ORDER_PAY_RESET });
+		dispatch({ type: ORDER_DELIVER_RESET });
 
 		if (!order || successPay) {
 			dispatch({ type: ORDER_PAY_RESET });
+			dispatch({ type: ORDER_DELIVER_RESET });
 			dispatch(getOrderDetails(orderId));
 		}
-	}, [dispatch, orderId, order, successPay]);
+	}, [dispatch, orderId, order, successPay, successDeliver]);
 
 	const successPaymentHandler = (paymentResult) => {
 		dispatch(payOrder(orderId, paymentResult));
 	};
+
+	const deliverHandler = () => dispatch(deliverOrder(order));
 
 	return loading ? (
 		<Loader />
@@ -251,6 +278,20 @@ const OrderScreen = () => {
 								)}
 							</Box>
 						)}
+
+						{/* Order Deliver Button */}
+						{loadingDeliver && <Loader />}
+						{userInfo &&
+							userInfo.isAdmin &&
+							order.isPaid &&
+							!order.isDelivered && (
+								<Button
+									type='button'
+									colorScheme='teal'
+									onClick={deliverHandler}>
+									Mark as delivered
+								</Button>
+							)}
 					</Flex>
 				</Grid>
 			</Flex>
