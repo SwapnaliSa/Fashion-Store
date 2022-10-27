@@ -14,7 +14,6 @@ import {
 	PRODUCT_LIST_SUCCESS,
 	PRODUCT_UPDATE_FAIL,
 	PRODUCT_UPDATE_REQUEST,
-	PRODUCT_UPDATE_RESET,
 	PRODUCT_UPDATE_SUCCESS,
 } from '../constants/productConstants';
 
@@ -113,7 +112,7 @@ export const createProduct = () => async (dispatch, getState) => {
 
 export const updateProduct = (product) => async (dispatch, getState) => {
 	try {
-		dispatch({ type: PRODUCT_DELETE_REQUEST });
+		dispatch({ type: PRODUCT_UPDATE_REQUEST });
 
 		const {
 			userLogin: { userInfo },
@@ -135,7 +134,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 		dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
 	} catch (err) {
 		dispatch({
-			type: PRODUCT_DELETE_FAIL,
+			type: PRODUCT_UPDATE_FAIL,
 			payload:
 				err.response && err.response.data.message
 					? err.response.data.message
