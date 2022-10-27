@@ -8,9 +8,11 @@ import {
 	Link,
 	Spacer,
 } from '@chakra-ui/react';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+
 import { listProductDetails, updateProduct } from '../actions/productActions';
 import FormContainer from '../components/FormContainer';
 import Loader from '../components/Loader';
@@ -30,6 +32,7 @@ const ProductEditScreen = () => {
 	const [category, setCategory] = useState('');
 	const [description, setDescription] = useState('');
 	const [countInStock, setCountInStock] = useState('');
+	const [uploading, setUploading] = useState(false);
 
 	const productDetails = useSelector((state) => state.productDetails);
 	const { loading, error, product } = productDetails;
@@ -75,6 +78,28 @@ const ProductEditScreen = () => {
 				countInStock,
 			})
 		);
+	};
+
+	const uploadFileHandler = async (e) => {
+		const file = e.target.files[0];
+		const formData = new FormData();
+		formData.append('image', file);
+		setUploading(true);
+
+		try {
+			const config = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			};
+
+			const { data } = await axios.post(`/api/uploads`, formData, config);
+			setImage(data);
+			setUploading(false);
+		} catch (err) {
+			console.error(err);
+			setUploading(false);
+		}
 	};
 
 	return (
@@ -130,6 +155,11 @@ const ProductEditScreen = () => {
 									placeholder='Enter image url'
 									value={image}
 									onChange={(e) => setImage(e.target.value)}
+								/>
+								<Input
+									type='file'
+									id='image-file'
+									onChange={uploadFileHandler}
 								/>
 							</FormControl>
 							<Spacer h='3' />
