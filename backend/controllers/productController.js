@@ -105,6 +105,8 @@ const updateProduct = asyncHandler(async (req, res) => {
 const createProductReview = asyncHandler(async (req, res) => {
 	const { rating, comment } = req.body;
 
+	console.log(req.user);
+
 	const product = await Product.findById(req.params.id);
 
 	if (product) {
